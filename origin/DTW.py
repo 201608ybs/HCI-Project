@@ -1,16 +1,25 @@
 # -*- coding: UTF-8 -
 import numpy as np
+import math
 
 
 def cal_distance(point1, point2):
-    vec1 = np.array(point1)
-    vec2 = np.array(point2)
-
-    distance = np.sqrt(np.sum(np.square(vec1 - vec2)))
+    if type(point1) == list:
+        vec1 = np.array(point1)
+        vec1 = vec1 / np.sqrt(np.sum(np.square(vec1)))
+        vec2 = np.array(point2)
+        vec2 = vec2 / np.sqrt(np.sum(np.square(vec2)))
+        vec3 = vec1 * vec2
+        distance = math.acos(np.sum(vec3)) * 180 / math.pi
+    else:
+        if abs(point1 - point2) > 180:
+            distance = 360 - abs(point1 - point2)
+        else:
+            distance = abs(point1 - point2)
     return distance
 
 
-def DTW(sequence1, sequence2, path):
+def DTW(sequence1, sequence2):
     r, c = len(sequence1), len(sequence2)
     # 添加一行和一列便于动态规划
     D0 = np.zeros((r + 1, c + 1))
@@ -44,5 +53,6 @@ def DTW(sequence1, sequence2, path):
             j -= 1
         p.insert(0, i)
         q.insert(0, j)
-    path = zip(p, q)
-    return D1[-1, -1]
+    return D1[-1, -1] / len(zip(p, q))
+
+

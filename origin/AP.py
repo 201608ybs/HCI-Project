@@ -1,15 +1,16 @@
 # -*- coding: UTF-8 -
 import numpy as np
+import random
+import math
 from DTW import DTW
 
 
 def cal_seq_list(sequences):
     seq_distance_list = []
     for s in sequences:
-        path = []
         temp = []
         for n in sequences:
-            seq_distance = DTW(s, n, path)
+            seq_distance = DTW(s, n)
             temp.append(-seq_distance)
         seq_distance_list.append(temp)
 
@@ -31,7 +32,7 @@ def init_matrix_a(length):
 
 def iter_update_r(length, R, A, seq_distance_list):
     old_r = 0
-    lam = 0.5  # 阻尼系数,用于算法收敛
+    lam = 0.2  # 阻尼系数,用于算法收敛
     # 此循环更新R矩阵
     for i in range(length):
         for k in range(length):
@@ -128,10 +129,41 @@ def cal_clusters(cluster_centers, sequences):
         temp = []
         for j in cluster_centers:
             n = sequences[j]
-            path = []
-            d = DTW(m, n, path)
+            d = DTW(m, n)
             temp.append(d)
         # 记录聚类中心索引
         c = cluster_centers[temp.index(np.min(temp))]
         clusters.append(c)
     return clusters
+
+
+def generate_cluster_dir(cluster_num, sequence_per_cluster, factor):
+    directions = []
+    for i in range(cluster_num):
+        # 生成每一簇数据中心点陀螺仪数据
+        base_direction = [random.uniform(-180, 180), random.uniform(-180, 180), random.uniform(-180, 180)]
+        '''
+        print base_direction
+        for j in range(0, sequence_per_cluster):
+            # 对数据进行微调
+            x = base_direction[0] + random.uniform(-factor, factor)
+            y = base_direction[1] + random.uniform(-factor, factor)
+            z = base_direction[2] + random.uniform(-factor, factor)
+            directions.append([x, y, z])
+        '''
+        directions.append(base_direction)
+    return directions
+
+
+dataLen = 160
+Xn = generate_cluster_dir(8, 20, 1)
+Yn = generate_cluster_dir(8, 20, 1)
+'''
+R = init_matrix_r(dataLen)
+A = init_matrix_a(dataLen)
+simi = cal_seq_list(Xn)
+class_cen = cal_cluster_centers(dataLen, simi, R, A)
+'''
+print Xn
+print Yn
+
