@@ -1,3 +1,11 @@
-/.idea
-/_pycache_
-/venv
+.idea/
+_pycache_/
+venv/
+.vs/
+Library/
+Logs/
+obj/
+Packages/
+*.csproj
+*.sln
+.vs/

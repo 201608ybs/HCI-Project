@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: d899d35caca90954880061dab69c1346
+  - enabled: 1
+    path: Assets/Scenes/Selection.unity
+    guid: 93a422f3a6e69a04485f94dbc92b65c1
+  - enabled: 1
+    path: Assets/Scenes/Gesture1.unity
+    guid: 14a042af09d7cce408dc384b4cc13e60
+  - enabled: 1
+    path: Assets/Scenes/Gesture2.unity
+    guid: 1ee800e3595330546b34b0adfe55c2bf
+  - enabled: 1
+    path: Assets/Scenes/Gesture3.unity
+    guid: 9013dec87923b6b44aec11f90a842f62
+  - enabled: 1
+    path: Assets/Scenes/Gesture4.unity
+    guid: 02d45a22b5ea4354ea790f2d9c969f58
+  - enabled: 1
+    path: Assets/Scenes/Customize.unity
+    guid: d18f8b0755bbdbe45a8846647a210088
+  m_configObjects: {}
