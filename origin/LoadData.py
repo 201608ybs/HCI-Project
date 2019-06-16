@@ -1,38 +1,38 @@
+# -*- coding: utf-8 -*-
 import serial
-import os,time
-import DTW
-import AP
+import datetime
 
-serialPort = "COM3"
-Rate = 57600
-ser = serial.Serial(serialPort, Rate, timeout=0.5)
-data = []
-simple = []
-i = 0
 
-while i < 20:
-    str = ser.readline()
-    str = str.decode('utf-8')
-    temp = str.split(' ')
-    if len(temp) == 3:
-        for index in range(3):
-            try:
-                temp[index] = float(temp[index])
-                if len(data) >= 20 and index == len(temp) - 1:
-                    data.remove(data[0])
-                    data.append(temp)
-                if len(data) < 20 and index == len(temp) - 1:
-                    data.append(temp)
-            except ValueError:
-                continue
-        if len(data) == 20:
-            simple.append(data)
-            data = []
-            i += 1
-            print i
-R = AP.init_matrix_r(20)
-A = AP.init_matrix_a(20)
-simi = AP.cal_seq_list(simple)
-print simi
-class_cen = AP.cal_cluster_centers(20, simi, R, A)
-print class_cen
+def init_port():
+    serial_port = "COM4"
+    baud_rate = 9600
+    my_serial = serial.Serial(serial_port, baud_rate, timeout=0.5)
+    return my_serial
+
+
+def receive_data(receive_serial):
+    f = open("hou-data4-8\-e.txt", 'w')
+    flag1 = 0
+    flag2 = 0
+
+    while True:
+        time_str = datetime.datetime.now().strftime('%H:%M:%S')
+        line = receive_serial.readline()
+        line = line.decode()
+        datapoint_list = line.split(',')
+        datapoint_list_without4 = datapoint_list[0:9] + datapoint_list[12:]
+        line_without4 = ",".join(datapoint_list_without4)
+        if line.count(',') == 19 and "0.00,0.00,0.00" not in line_without4:
+            flag1 = 1
+        if flag1 != flag2:
+            print("数据采集正常!")
+            flag2 = flag1
+        if flag1:
+            line = time_str + "," + line
+            f.write(line)
+            f.flush()
+
+
+if __name__ == "__main__":
+    receive_serial = init_port()
+    receive_data(receive_serial)

@@ -1,7 +1,6 @@
 import string
 import math
 from DTW import DTW
-import numpy as np
 
 '''
 def deal(beforedeal):
@@ -29,13 +28,13 @@ fingers_roll = [[], [], [], [], []]
 for line in f:
     temp = line.split(",", -1)
     for i in range(0, 5):
-        x = string.atof(temp[3 * i + 1]) * math.pi / 180
-        y = string.atof(temp[3 * i + 2]) * math.pi / 180
-        z = string.atof(temp[3 * i + 3])
+        x = float(temp[3 * i + 1]) * math.pi / 180
+        y = float(temp[3 * i + 2]) * math.pi / 180
+        z = float(temp[3 * i + 3])
         point = [math.cos(x) * math.cos(y), math.sin(x) * math.cos(y), math.sin(y)]
         fingers_direction[i].append(point)
         fingers_spin[i].append(z)
-        fingers_roll[i].append(string.atof(temp[15 + i]))
+        fingers_roll[i].append(float(temp[16 + i]))
 finger1_1 = fingers_direction[0]
 finger2_1 = fingers_direction[1]
 finger3_1 = fingers_direction[2]
@@ -69,13 +68,13 @@ fingers_roll = [[], [], [], [], []]
 for line in f:
     temp = line.split(",", -1)
     for i in range(0, 5):
-        x = string.atof(temp[3 * i + 1]) * math.pi / 180
-        y = string.atof(temp[3 * i + 2]) * math.pi / 180
-        z = string.atof(temp[3 * i + 3])
+        x = float(temp[3 * i + 1]) * math.pi / 180
+        y = float(temp[3 * i + 2]) * math.pi / 180
+        z = float(temp[3 * i + 3])
         point = [math.cos(x) * math.cos(y), math.sin(x) * math.cos(y), math.sin(y)]
         fingers_direction[i].append(point)
         fingers_spin[i].append(z)
-        fingers_roll[i].append(string.atof(temp[15 + i]))
+        fingers_roll[i].append(float(temp[15 + i]))
 finger1_2 = fingers_direction[0]
 finger2_2 = fingers_direction[1]
 finger3_2 = fingers_direction[2]
@@ -102,25 +101,21 @@ roll5_2 = fingers_roll[4]
 
 f.close()
 
-
-print DTW(finger1_1, finger1_2)
-print DTW(finger2_1, finger2_2)
-print DTW(finger3_1, finger3_2)
-print DTW(finger4_1, finger4_2)
-print DTW(finger5_1, finger5_2)
-print '/n'
-print DTW(spin1_1, spin1_2)
-print DTW(spin2_1, spin2_2)
-print DTW(spin3_1, spin3_2)
-print DTW(spin4_1, spin4_2)
-print DTW(spin5_1, spin5_2)
-print '/n'
-print DTW(roll1_1, roll1_2)
-print DTW(roll2_1, roll2_2)
-print DTW(roll3_1, roll3_2)
-print DTW(roll4_1, roll4_2)
-print DTW(roll5_1, roll5_2)
-print '/n'
-
-
-
+print(DTW(finger1_1, finger1_2, 0))
+print(DTW(finger2_1, finger2_2, 0))
+print(DTW(finger3_1, finger3_2, 0))
+print(DTW(finger4_1, finger4_2, 0))
+print(DTW(finger5_1, finger5_2, 0))
+print('/n')
+print(DTW(spin1_1, spin1_2, 1))
+print(DTW(spin2_1, spin2_2, 1))
+print(DTW(spin3_1, spin3_2, 1))
+print(DTW(spin4_1, spin4_2, 1))
+print(DTW(spin5_1, spin5_2, 1))
+print('/n')
+print(DTW(roll1_1, roll1_2, 2))
+print(DTW(roll2_1, roll2_2, 2))
+print(DTW(roll3_1, roll3_2, 2))
+print(DTW(roll4_1, roll4_2, 2))
+print(DTW(roll5_1, roll5_2, 2))
+print('/n')

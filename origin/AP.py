@@ -1,16 +1,27 @@
 # -*- coding: UTF-8 -
+import os
+
 import numpy as np
 import random
-import math
-from DTW import DTW
+from DTW import cal_sequence_dist
+
+
+def get_filename_list():
+    for root, dirs, files in os.walk("./data"):
+        return files
 
 
 def cal_seq_list(sequences):
     seq_distance_list = []
+    count = 0
+    ceil = len(sequences) * len(sequences)
+    print("ceil: " + str(ceil))
     for s in sequences:
         temp = []
         for n in sequences:
-            seq_distance = DTW(s, n)
+            seq_distance = cal_sequence_dist(s, n)
+            count += 1
+            print(str(count) + " : " + str(seq_distance))
             temp.append(-seq_distance)
         seq_distance_list.append(temp)
 
@@ -116,7 +127,7 @@ def cal_cluster_centers(length, seq_distance_list, R, A):
                     cluster_centers.append(k)
                 else:
                     curr_comp += 1
-        # print("current iterator times: %d\n" % curr_iter)
+        print("current iterator times: %d\n" % curr_iter)
         if curr_iter >= max_iter or curr_comp > max_comp:
             break
 
@@ -129,7 +140,7 @@ def cal_clusters(cluster_centers, sequences):
         temp = []
         for j in cluster_centers:
             n = sequences[j]
-            d = DTW(m, n)
+            d = cal_sequence_dist(m, n)
             temp.append(d)
         # 记录聚类中心索引
         c = cluster_centers[temp.index(np.min(temp))]
@@ -155,15 +166,18 @@ def generate_cluster_dir(cluster_num, sequence_per_cluster, factor):
     return directions
 
 
-dataLen = 160
-Xn = generate_cluster_dir(8, 20, 1)
-Yn = generate_cluster_dir(8, 20, 1)
-'''
-R = init_matrix_r(dataLen)
-A = init_matrix_a(dataLen)
-simi = cal_seq_list(Xn)
-class_cen = cal_cluster_centers(dataLen, simi, R, A)
-'''
-print Xn
-print Yn
-
+if __name__ == "__main__":
+    file_name_list = get_filename_list()
+    file_name_list = ["./data/" + filename for filename in file_name_list]
+    dataLen = len(file_name_list)
+    simi = cal_seq_list(file_name_list)
+    R = init_matrix_r(dataLen)
+    A = init_matrix_a(dataLen)
+    cluster_centers = cal_cluster_centers(dataLen, simi, R, A)
+    clusters = cal_clusters(cluster_centers, file_name_list)
+    print(cluster_centers)
+    print(clusters)
+    cluster_centers = [file_name_list[x] for x in cluster_centers]
+    clusters = [file_name_list[x] for x in clusters]
+    print(cluster_centers)
+    print(clusters)
